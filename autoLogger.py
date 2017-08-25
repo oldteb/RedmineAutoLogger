@@ -88,6 +88,9 @@ def main():
             logAction("[" + now().strftime("%y-%m-%d-%H-%M") + " " + today.strftime("%A") + "] issue id:" + str(issue_id) + ", hours:" + str(hours) + ", comments:" + comments)
             redmineService.createNewIssue(issue_id, hours, comments)
             logged = True
+        
+        # logAction('test script running')
+        
         # take a x mins break
         time.sleep(1*60) 
     
