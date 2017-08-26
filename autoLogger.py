@@ -79,12 +79,12 @@ def main():
             time.sleep(1*60)
             continue
         # skip if not in working hours
-        if now.hour < 9 or now.hour > 17:
+        if now.hour < 9 or now.hour > 18:
             time.sleep(1*60)
             continue
         if getpass.getuser() == userName:
             isWorking = True
-        if now.hour == 5 and isWorking == True and logged == False:
+        if now.hour == 17 and isWorking == True and logged == False:
             logAction("[" + now().strftime("%y-%m-%d-%H-%M") + " " + today.strftime("%A") + "] issue id:" + str(issue_id) + ", hours:" + str(hours) + ", comments:" + comments)
             redmineService.createNewIssue(issue_id, hours, comments)
             logged = True
