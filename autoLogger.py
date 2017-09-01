@@ -15,7 +15,7 @@ def loadFromConfig():
 
 
 def logAction(msg):
-    file = open("log.txt", "w") 
+    file = open("log.txt", "a") 
     file.write(msg + "\n")
 
 
@@ -68,9 +68,10 @@ def main():
         hours = config["hours"]
         comments = config["comments"]
         APIkey = config["APIkey"]
-
+                
         now = datetime.datetime.now()
         today = datetime.datetime.today()
+        
         if now.hour == 0:
             isWorking = False
             logged = False
@@ -82,14 +83,15 @@ def main():
         if now.hour < 9 or now.hour > 18:
             time.sleep(1*60)
             continue
+
         if getpass.getuser() == userName:
             isWorking = True
-        if now.hour == 17 and isWorking == True and logged == False:
-            logAction("[" + now().strftime("%y-%m-%d-%H-%M") + " " + today.strftime("%A") + "] issue id:" + str(issue_id) + ", hours:" + str(hours) + ", comments:" + comments)
+            
+        # log time at 4:00PM
+        if now.hour == 16 and isWorking == True and logged == False:
+            logAction("[" + time.strftime("%m-%d-%y %H:%M %a") + "] issue id:" + str(issue_id) + ", hours:" + str(hours) + ", comments:" + comments)
             redmineService.createNewIssue(issue_id, hours, comments)
             logged = True
-        
-        # logAction('test script running')
         
         # take a x mins break
         time.sleep(1*60) 
