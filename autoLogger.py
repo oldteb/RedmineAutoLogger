@@ -5,8 +5,7 @@ import json
 import getpass
 import datetime
 import time
-
-import redmineService
+import holidays
 
 def loadFromConfig():
     file = open("config.json", "r") 
@@ -59,9 +58,11 @@ def main():
     print('Redmine Auto Logger starts')
     # # set the pythons's default encoding to UTF8
     # sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8')
+    
     isWorking = False
     logged = False
     while(True):
+        us_holidays = holidays.UnitedStates()
         config = loadFromConfig()
         userName = config["userName"]
         issue_id = config["issue_id"]
@@ -75,15 +76,22 @@ def main():
         if now.hour == 0:
             isWorking = False
             logged = False
+            
         # skip weekend
         if today.weekday() > 4:   # 4 is Friday
             time.sleep(1*60)
             continue
+        
+        # skip national holildays
+        if today in us_holidays:
+            time.sleep(1*60)
+            continue
+        
         # skip if not in working hours
         if now.hour < 9 or now.hour > 18:
             time.sleep(1*60)
             continue
-
+        
         if getpass.getuser() == userName:
             isWorking = True
             
