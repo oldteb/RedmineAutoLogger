@@ -18,11 +18,10 @@ def testGetTimeEntriesInRange():
     
 
 
-def testCreateNewIssue():
-    newTimeEntry = TimeEntry(426,'2017-10-13',8,'testCreateNewIssue1')
-    api.createNewIssue(userYT, newTimeEntry)
+def testLogTime():
+    newTimeEntry = TimeEntry(30,426,'2017-10-13',8,'testCreateNewIssue2')
+    api.logTime(userYT, newTimeEntry)
     
-
 
 
 def main():
@@ -31,7 +30,7 @@ def main():
     userYT = RedmineUser('YTang',23,'c95029486a22c24bd38972a611e9eb1282a2a023')
     api = RedmineAPI()
     # testGetTimeEntriesInRange()
-    testCreateNewIssue()
+    testLogTime()
 
 
 if __name__ == "__main__":

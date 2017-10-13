@@ -27,8 +27,34 @@ class RedmineAPI:
         # print(timeEntriesObj["total_count"])
         return timeEntriesObj
     
-
-
+    
+    
+    # This function logs a new time entry.
+    def logTime(self, user, timeEntry):
+        header = {
+            'X-Redmine-API-Key': user.APIkey,
+            'Content-Type': 'application/json'
+        }
+        newTimeEntry = {}
+        newTimeEntry["project_id"] = timeEntry.projectId
+        newTimeEntry["issue_id"] = timeEntry.issueId
+        newTimeEntry["hours"] = timeEntry.hours
+        newTimeEntry["comments"] = timeEntry.comments
+        newTimeEntry["spent_on"] = timeEntry.date
+        payload = {}
+        payload["time_entry"] = newTimeEntry
+        payloadStr = json.dumps(payload)
+        # print(payloadStr)
+        r = requests.post("https://10.200.47.218/time_entries.json", data=payloadStr, headers=header, verify=False)
+        responseObj = json.loads(r.content.decode("utf-8"))
+        print('Successfully create new time entry: ' + str(responseObj["time_entry"]["id"]))
+        # print(r.content)
+        return
+    
+    
+    
+    # This function is abandont because it use xml format.
+    # New function is logTime(), which is implement using json.
     # This function logs a new time entry.
     def createNewIssue(self, user, timeEntry):
         header = {
