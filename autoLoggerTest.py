@@ -11,6 +11,7 @@ from redmineService import RedmineService
 from redmineAPI import RedmineAPI
 from redmineUser import RedmineUser
 from timeEntry import TimeEntry
+import autoLogger
 
 
 def testGetTimeEntriesInRange():
@@ -28,22 +29,31 @@ def testFillMissingLogs():
     service.fillMissingLogs(userYT, timeEntry, '2017-09-01', '2017-09-30')
 
 
-def testIsLogTimeNeeded():
-    rst = service.isLogTimeNeeded('2017-10-06')
+def testIsDateToLog():
+    rst = service.isDateToLog('2017-10-06')
     # print(rst)
 
+def testUpdateRedmine():
+    config = {}
+    autoLogger.updateRedmine(config, service)
+    
+    
 
 def main():
     global userYT
     global api
     global service
+    print('test start!')
     userYT = RedmineUser('YTang',23,'c95029486a22c24bd38972a611e9eb1282a2a023')
     api = RedmineAPI()
     service = RedmineService()
     # testGetTimeEntriesInRange()
     # testLogTime()
-    testFillMissingLogs()
-    # testIsLogTimeNeeded()
+    # testFillMissingLogs()
+    # testIsDateToLog()
+    # testUpdateRedmine()
+    
+    print('test complete!')
 
 if __name__ == "__main__":
     main()

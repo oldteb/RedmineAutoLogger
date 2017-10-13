@@ -3,11 +3,12 @@ import sys
 import requests
 import json
 import getpass
-import datetime
+from datetime import datetime, date, timedelta
 import time
-import holidays
 
-from redmineAPI import RedmineAPI
+from redmineService import RedmineService
+from redmineUser import RedmineUser
+from timeEntry import TimeEntry
 
 
 
@@ -20,60 +21,61 @@ def loadFromConfig():
 def logAction(msg):
     file = open("log.txt", "a") 
     file.write(msg + "\n")
+
+
+def updateRedmine(config, service):
+    user = RedmineUser.fromConifg(config)
+    timeEntry = TimeEntry.fromConifg(config)
     
+    startDate = (datetime.today() - timedelta(days=15)).date()
+    endDate = datetime.today().date()
+    
+    # print(startDate)
+    # print(endDate)
+    service.fillMissingLogs(user, timeEntry, str(startDate), str(endDate))
+    
+    
+# take a x mins break
+def takeBreak():
+    time.sleep(1*60)
+
+
     
 def main():
     print('Redmine Auto Logger starts')
     # # set the pythons's default encoding to UTF8
     # sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8')
-    
-    api = RedmineAPI()
-    
+
     isWorking = False
     logged = False
+    
     while(True):
-        us_holidays = holidays.UnitedStates()
+        takeBreak()
+        service = RedmineService()
         config = loadFromConfig()
-        userName = config["userName"]
-        issue_id = config["issue_id"]
-        hours = config["hours"]
-        comments = config["comments"]
-        APIkey = config["APIkey"]
-                
-        now = datetime.datetime.now()
-        today = datetime.datetime.today()
+        now = datetime.now()
         
         if now.hour == 0:
             isWorking = False
             logged = False
-            
-        # skip weekend
-        if today.weekday() > 4:   # 4 is Friday
-            time.sleep(1*60)
-            continue
         
-        # skip national holildays
-        if today in us_holidays:
-            time.sleep(1*60)
+        # skip weekend & holidays
+        if service.isDateToLog(str(now.date())) == False:
             continue
         
         # skip if not in working hours
         if now.hour < 9 or now.hour > 18:
-            time.sleep(1*60)
             continue
         
+        # skip if user is not log in
         if getpass.getuser() == userName:
             isWorking = True
             
         # log time at 4:00PM
         if now.hour == 16 and isWorking == True and logged == False:
-            logAction("[" + time.strftime("%m-%d-%y %H:%M %a") + "] issue id:" + str(issue_id) + ", hours:" + str(hours) + ", comments:" + comments)
-            api.createNewIssue(issue_id, hours, comments)
+            updateRedmine(config, service)
             logged = True
-        
-        # take a x mins break
-        time.sleep(1*60) 
-    
+            
     print('Redmine Auto Logger exits')
 
 

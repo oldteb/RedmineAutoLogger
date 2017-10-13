@@ -18,6 +18,7 @@ class RedmineService:
         self.api = RedmineAPI()
         self.us_holidays = holidays.UnitedStates()
     
+    
     # find and log time for all dates that log is missing.
     # only dates in range [startTime, endTime] is checked.
     def fillMissingLogs(self, user, timeEntry, startTime, endTime):
@@ -30,7 +31,7 @@ class RedmineService:
                 unlogDates.append(date)
         
         for date in unlogDates:
-            if self.isLogTimeNeeded(date):
+            if self.isDateToLog(date):
                 timeEntry.date = date
                 self.api.logTime(user, timeEntry)
         return
@@ -38,7 +39,7 @@ class RedmineService:
     
     # find if time should be logged or not on a specific day.
     # for example, weekend and holiday should be skipped.
-    def isLogTimeNeeded(self, dateStr):
+    def isDateToLog(self, dateStr):
         pattern = '%Y-%m-%d'
         date = datetime.strptime(dateStr, pattern).date()
         # skip weekend
