@@ -8,9 +8,8 @@ class RedmineUser:
         self.APIkey = APIkey
         
     @classmethod
-    def fromConfig(self, config):
-        newUser = self.__init__(config["userName"], config["user_id"], config["APIkey"])
-        return newUser
+    def fromConfig(cls, config):        
+        return cls(config["userName"], config["user_id"], config["APIkey"])
         
         
         

@@ -34,7 +34,15 @@ def testIsDateToLog():
     # print(rst)
 
 def testUpdateRedmine():
-    config = {}
+    config = {
+    	"APIkey":"c95029486a22c24bd38972a611e9eb1282a2a023",
+    	"userName": "YTang",
+    	"project_id": 30,
+    	"issue_id": 426,
+    	"user_id": 23,
+    	"hours": 8,
+    	"comments": "Working on QMS; add purchase order."
+    }
     autoLogger.updateRedmine(config, service)
     
     
@@ -51,7 +59,7 @@ def main():
     # testLogTime()
     # testFillMissingLogs()
     # testIsDateToLog()
-    # testUpdateRedmine()
+    testUpdateRedmine()
     
     print('test complete!')
 

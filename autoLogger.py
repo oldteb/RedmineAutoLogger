@@ -24,8 +24,8 @@ def logAction(msg):
 
 
 def updateRedmine(config, service):
-    user = RedmineUser.fromConifg(config)
-    timeEntry = TimeEntry.fromConifg(config)
+    user = RedmineUser.fromConfig(config)
+    timeEntry = TimeEntry.fromConfig(config)
     
     startDate = (datetime.today() - timedelta(days=15)).date()
     endDate = datetime.today().date()
