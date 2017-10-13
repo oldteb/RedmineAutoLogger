@@ -18,11 +18,6 @@ def loadFromConfig():
     return json.loads(jsonStr)
 
 
-def logAction(msg):
-    file = open("log.txt", "a") 
-    file.write(msg + "\n")
-
-
 def updateRedmine(config, service):
     user = RedmineUser.fromConfig(config)
     timeEntry = TimeEntry.fromConfig(config)

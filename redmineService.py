@@ -18,6 +18,12 @@ class RedmineService:
         self.api = RedmineAPI()
         self.us_holidays = holidays.UnitedStates()
     
+    # log activiy
+    def logAction(self, msg):
+        file = open("log.txt", "a") 
+        file.write(msg + "\n")
+    
+    
     
     # find and log time for all dates that log is missing.
     # only dates in range [startTime, endTime] is checked.
@@ -34,6 +40,12 @@ class RedmineService:
             if self.isDateToLog(date):
                 timeEntry.date = date
                 self.api.logTime(user, timeEntry)
+                now = datetime.now()
+                self.logAction(
+                    "[" + now.strftime("%m-%d-%y %H:%M %a") + "] issue id:" + 
+                    str(timeEntry.issueId) + ", hours:" + str(timeEntry.hours) + 
+                    ", comments:" + timeEntry.comments
+                )
         return
     
     
