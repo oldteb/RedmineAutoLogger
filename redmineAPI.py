@@ -12,7 +12,7 @@ class RedmineAPI:
     def __init__(self):
         pass
 
-    # This function return all the time entries that within the given time range(inclusive).
+    # This method return all the time entries that within the given time range(inclusive).
     # The startTime and endTime string must be in format of 'yyyy-MM-dd'
     def getTimeEntriesInRange(self, user, startTime, endTime):
         header = {
@@ -29,7 +29,7 @@ class RedmineAPI:
     
     
     
-    # This function logs a new time entry.
+    # This method logs a new time entry.
     def logTime(self, user, timeEntry):
         header = {
             'X-Redmine-API-Key': user.APIkey,
@@ -53,9 +53,9 @@ class RedmineAPI:
     
     
     
-    # This function is abandont because it use xml format.
-    # New function is logTime(), which is implement using json.
-    # This function logs a new time entry.
+    # This method is abandont because it use xml format.
+    # New method is logTime(), which is implement using json.
+    # This method logs a new time entry.
     def createNewIssue(self, user, timeEntry):
         header = {
             'X-Redmine-API-Key': user.APIkey,
