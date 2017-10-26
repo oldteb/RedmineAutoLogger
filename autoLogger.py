@@ -63,7 +63,7 @@ def main():
             continue
         
         # skip if user is not log in
-        if getpass.getuser() == userName:
+        if getpass.getuser() == config["userName"]:
             isWorking = True
             
         # log time at 4:00PM
